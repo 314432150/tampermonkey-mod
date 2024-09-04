@@ -23,6 +23,8 @@ declare global {
         grant: string[];
         /** 用户脚本作者 */
         author: string;
+        /** 用户脚本许可类型 */
+        license: string;
         /** 用户脚本主页 */
         homepage: string;
         /** 揭示脚本是否包含广告、追踪等特性 */

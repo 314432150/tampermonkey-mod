@@ -8,7 +8,6 @@
 import packageJson from "./package.json" assert { type: "json" };
 // 导入用户脚本生成器中的工具函数
 import {
-    UserScriptHeader, // 用户脚本头部定义
     generateIcon, // 生成图标链接
     generateCdnRequires, // 生成CDN依赖
 } from "./dev-tools/userscript-generator";
@@ -19,7 +18,7 @@ import {
  * 添加多个同名header需要传入一个数组
  * "空字符串 /空数组 /false" 表示不添加该header
  */
-export default {
+const userScriptHeader: UserScriptHeader = {
     // 用户脚本名称
     name: packageJson.name,
     // 用户脚本命名空间
@@ -72,4 +71,6 @@ export default {
     webRequest: "",
     // 是否解除包装直接注入脚本
     unwrap: false,
-} as UserScriptHeader;
+};
+
+export default userScriptHeader;
