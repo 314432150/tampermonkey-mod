@@ -1,6 +1,6 @@
-# Tampermonkey-mod
+# tampermonkey-mod
 
-Tampermonkey-mod 是一个专为 Tampermonkey 设计的模块化 TypeScript 开发框架，旨在简化复杂脚本项目的开发流程。
+tampermonkey-mod 是一个专为 Tampermonkey 设计的模块化 TypeScript 开发框架，旨在简化复杂脚本项目的开发流程。
 
 ## 项目背景
 
