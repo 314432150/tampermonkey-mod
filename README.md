@@ -29,7 +29,8 @@ Tampermonkey-mod 旨在提供一个平衡的解决方案，既保留了 TypeScri
 1. 使用 GitHub 模板:
 
     - 访问 [tampermonkey-mod 模板](https://github.com/314432150/tampermonkey-mod/generate)
-    - 点击 "Use this template" 按钮创建你的仓库
+    - 输入 "Repository name" 填写存储库名称
+    - 点击 "Create repository" 按钮创建你的仓库
 
 2. 克隆你的新仓库:
 
