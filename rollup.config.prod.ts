@@ -14,7 +14,7 @@ import userScriptHeader from "./userscript-header.js";
 import {
     generateUserScriptComments,
     installUserScript,
-} from "./dev-tools/userscript-generator";
+} from "./build-utils/userscript-generator.js";
 // 导入Rollup配置类型
 import { RollupOptions } from "rollup";
 

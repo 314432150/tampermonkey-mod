@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "dev": "rollup -c rollup.config.dev.ts -w --configPlugin typescript",
-        "prod": "rollup -c rollup.config.prod.ts --configPlugin typescript"
+        "build": "rollup -c rollup.config.prod.ts --configPlugin typescript"
     },
     "repository": {
         "type": "git",

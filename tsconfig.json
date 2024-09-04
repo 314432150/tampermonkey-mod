@@ -12,7 +12,7 @@
     },
     "include": [
         "src/**/*",
-        "dev-tools/**/*",
+        "build-utils/**/*",
         "rollup.config.*.ts",
         "userscript-header.ts"
     ]

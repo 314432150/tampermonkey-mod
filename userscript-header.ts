@@ -10,7 +10,7 @@ import packageJson from "./package.json" assert { type: "json" };
 import {
     generateIcon, // 生成图标链接
     generateCdnRequires, // 生成CDN依赖
-} from "./dev-tools/userscript-generator";
+} from "./build-utils/userscript-generator";
 
 /**
  * UserScript 配置

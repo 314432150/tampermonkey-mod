@@ -1,7 +1,7 @@
 /**
  * Rollup 配置模块
  *
- * 本模块负责定义Rollup打包工具的配置，用于处理业务代码、热重载客户端代码以及用户脚本的构建流程。
+ * 本模块负责定义Rollup打包工具的配置，用于处理业务代码、热重载客户端代码以及UserScript的构建流程。
  */
 
 // 导入路径模块，用于文件路径操作
@@ -12,19 +12,19 @@ import { RollupOptions } from "rollup";
 import json from "@rollup/plugin-json";
 // 导入基础配置，用于共享的一些默认配置
 import baseConfig from "./rollup.config.base";
-// 导入用户脚本头部信息，包含脚本的元数据
+// 导入UserScript头部信息，包含脚本的元数据
 import userScriptHeader from "./userscript-header";
-// 导入生成用户脚本注释的函数，用于在构建过程中添加注释到输出文件
+// 导入用户脚本生成器用于生成UserScript注释,，导入安装用户脚本函数
 import {
     generateUserScriptComments,
     installUserScript,
-} from "./dev-tools/userscript-generator";
+} from "./build-utils/userscript-generator";
 // 导入启动WebSocket服务器的函数，用于开发工具中的实时重加载功能
-import { startWebSocketServer } from "./dev-tools/server";
+import { startWebSocketServer } from "./build-utils/server";
 
 // 是否已require过业务代码入口文件
 let hasRequiredFiles = false;
-// 标记用户脚本是否已经安装过
+// 标记UserScript是否已经安装过
 let hasInstalledUserScript = false;
 
 // 业务代码入口文件
@@ -33,12 +33,12 @@ const indexInputFile = "src/index.ts";
 const indexOutputFile = "dist/index.bundle.js";
 
 // 热重载客户端入口文件
-const clientInputFile = "dev-tools/client.ts";
+const clientInputFile = "build-utils/client.ts";
 // 热重载客户端输出文件
 const clientOutputFile = "dist/client.bundle.js";
 
 // UserScript 入口文件
-const userScriptInputFile = "dev-tools/userscript-header-container.ts";
+const userScriptInputFile = "build-utils/userscript-header-container.ts";
 // UserScript 输出文件
 const userScriptOutputFile = "dist/header.bundle.user.js";
 
@@ -71,7 +71,7 @@ function createIndexConfig(): RollupOptions {
 function createClientConfig(): RollupOptions {
     return {
         ...baseConfig, // 继承基础配置
-        input: clientInputFile,
+        input: clientInputFile, // 入口文件
         output: {
             file: clientOutputFile, // 输出文件名
             format: "iife", // 输出格式
@@ -108,7 +108,7 @@ function notifyClientsUpdate() {
 }
 
 /**
- * 创建用户脚本配置
+ * 创建UserScript配置
  * @returns {RollupOptions}
  */
 function createUserScriptConfig(): RollupOptions {
@@ -125,7 +125,7 @@ function createUserScriptConfig(): RollupOptions {
             {
                 name: "userscript-installer", // 自定义插件名称
                 buildEnd: () => {
-                    // 首次打包时,安装用户脚本
+                    // 首次打包时,安装UserScript
                     if (!hasInstalledUserScript) {
                         installUserScript(userScriptOutputFile);
                         hasInstalledUserScript = true;
