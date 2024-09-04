@@ -1,6 +1,20 @@
 # Tampermonkey-mod
 
-Tampermonkey-mod 是一个用于 Tampermonkey 的模块化 TypeScript 开发框架，旨在简化复杂项目的开发流程。
+Tampermonkey-mod 是一个专为 Tampermonkey 设计的模块化 TypeScript 开发框架，旨在简化复杂脚本项目的开发流程。
+
+## 项目背景
+
+本项目的诞生源于对现有解决方案的思考和改进：
+
+1. [userscript-template](https://github.com/JSREI/userscript-template)：
+   - 优点：结构精简，易上手
+   - 局限：仅支持 JavaScript，不能实时热重载
+
+2. [vite-plugin-monkey](https://github.com/lisonge/vite-plugin-monkey)：
+   - 优点：功能完善，支持脚本自动安装、代码热重载，兼容多种 monkey 脚本
+   - 局限：配置较为复杂，不易上手
+
+Tampermonkey-mod 旨在提供一个平衡的解决方案，既保留了 TypeScript 开发的优势，又避免了不必要的复杂性。
 
 ## 特性
 
@@ -47,45 +61,9 @@ Tampermonkey-mod 是一个用于 Tampermonkey 的模块化 TypeScript 开发框�
 
 2. 启动带有热重载功能的开发服务器：
 
-   ```
-   npm run dev
-   ```
-
-### 开发环境构建流程 `rollup.config.dev.ts`
-
-1. **多文件构建策略**：
-
-    - 业务逻辑代码 (`dist/index.bundle.js`)
-    - 热重载客户端代码 (`dist/client.bundle.js`)
-    - Tampermonkey 脚本 (`dist/header.bundle.user.js`)
-
-2. **智能 Tampermonkey 脚本生成**：
-
-    - 仅包含必要的 UserScript 元数据
-    - 通过`@require`指令动态引入业务逻辑和热重载客户端代码
-    - 自动为脚本名称添加`.dev`后缀，便于区分开发版本
-    - 使用当前时间戳作为版本号，确保每次构建都是最新版
-
-3. **自动化开发环境配置**：
-
-    - 启动本地 Web 服务器
-    - 首次构建时自动打开浏览器并安装开发版脚本
-
-4. **实时热重载机制**：
-
-    - 利用 WebSocket 技术实现服务器与客户端的实时通信
-    - 代码变更时自动通知客户端并触发页面刷新
-
-5. **高效的代码更新策略**：
-
-    - 采用 File 协议引用业务逻辑，确保每次刷新都加载最新代码
-    - 绕过浏览器缓存机制，保证开发过程中的即时反馈
-
-6. **模块化设计理念**：
-    - 将热重载逻辑与业务代码解耦，提高代码清晰度和可维护性
-    - 充分利用 Rollup 插件系统实现自定义构建逻辑
-
-这套精心设计的开发环境为开发者提供了流畅的开发体验，实现了从代码修改到浏览器实时预览的快速反馈循环，显著提升了 Tampermonkey 脚本的开发效率。
+    ```
+    npm run dev
+    ```
 
 ### 生产
 
@@ -93,56 +71,6 @@ Tampermonkey-mod 是一个用于 Tampermonkey 的模块化 TypeScript 开发框�
 
 ```
 npm run build
-```
-
-### 生产环境构建流程 `rollup.config.dev.ts` ：
-
-1. **单一输出文件**：
-
-    - 生成单一的生产版本用户脚本 `dist/prod.bundle.user.js`。
-    - 该脚本集成了必要的 UserScript 元信息和完整的业务逻辑代码。
-
-2. **动态版本号**：
-
-    - 每次构建时，自动将 UserScript 的版本号更新为当前时间。
-
-3. **代码打包**：
-
-    - 使用 Rollup 将所有源代码和依赖打包成一个独立执行的脚本。
-    - 采用 IIFE（立即执行函数表达式）格式，确保代码在隔离环境中运行。
-
-4. **自动安装**：
-    - 构建完成后，自动启动 Web 服务器。
-    - 通过 URL 访问，自动打开浏览器并提示安装生产版本的用户脚本。
-
-这种配置确保了生产版本脚本的独立性和易于分发，同时简化了安装过程，方便用户快速部署和使用。
-
-## 项目结构
-
-```
-tampermonkey-mod/
-├── src/
-│ └── index.ts # 主要业务逻辑入口文件
-├── build-utils/
-│ ├── types/
-│ │ └── userscript.d.ts # Tampermonkey API 类型定义文件
-│ ├── client.ts # 热重载客户端代码
-│ ├── server.ts # 开发服务器和 WebSocket 服务器
-│ ├── tool-config.json # 工具配置文件
-│ ├── userscript-generator.ts # UserScript 生成器工具函数
-│ └── userscript-header-container.ts # UserScript 元信息容器
-├── dist/
-│ ├── index.bundle.js # 打包后的主要业务逻辑（开发环境）
-│ ├── client.bundle.js # 打包后的热重载客户端代码（开发环境）
-│ ├── header.bundle.user.js # 生成的 UserScript 头部文件（开发环境）
-│ └── prod.bundle.user.js # 打包后的完整 UserScript（生产环境）
-├── rollup.config.base.ts # Rollup 基础配置
-├── rollup.config.dev.ts # Rollup 开发环境配置
-├── rollup.config.prod.ts # Rollup 生产环境配置
-├── userscript-header.ts # UserScript 头部配置
-├── package.json # 项目依赖和脚本配置
-├── tsconfig.json # TypeScript 配置
-└── README.md # 项目说明文档
 ```
 
 ## 配置
@@ -236,6 +164,91 @@ GM_addStyle("body { background-color: #f0f0f0; }");
 完整的类型定义可以在 `build-utils/types/userscript.d.ts` 文件中找到。这个文件定义了所有可用的 Tampermonkey API，以及一些相关的接口和类型。
 
 通过使用这些类型定义，你可以在开发过程中获得更好的代码提示和错误检查，从而提高开发效率和代码质量。
+
+## 构建流程
+
+### 开发环境 `rollup.config.dev.ts`
+
+1. **多文件构建策略**：
+
+    - 业务逻辑代码 (`dist/index.bundle.js`)
+    - 热重载客户端代码 (`dist/client.bundle.js`)
+    - Tampermonkey 脚本 (`dist/header.bundle.user.js`)
+
+2. **智能 Tampermonkey 脚本生成**：
+
+    - 仅包含必要的 UserScript 元数据
+    - 通过`@require`指令动态引入业务逻辑和热重载客户端代码
+    - 自动为脚本名称添加`.dev`后缀，便于区分开发版本
+    - 使用当前时间戳作为版本号，确保每次构建都是最新版
+
+3. **自动化开发环境配置**：
+
+    - 启动本地 Web 服务器
+    - 首次构建时自动打开浏览器并安装开发版脚本
+
+4. **实时热重载机制**：
+
+    - 利用 WebSocket 技术实现服务器与客户端的实时通信
+    - 代码变更时自动通知客户端并触发页面刷新
+
+5. **高效的代码更新策略**：
+
+    - 采用 File 协议引用业务逻辑，确保每次刷新都加载最新代码
+    - 绕过浏览器缓存机制，保证开发过程中的即时反馈
+
+6. **模块化设计理念**：
+    - 将热重载逻辑与业务代码解耦，提高代码清晰度和可维护性
+    - 充分利用 Rollup 插件系统实现自定义构建逻辑
+
+
+### 生产环境 `rollup.config.dev.ts` ：
+
+1. **单一输出文件**：
+
+    - 生成单一的生产版本用户脚本 `dist/prod.bundle.user.js`。
+    - 该脚本集成了必要的 UserScript 元信息和完整的业务逻辑代码。
+
+2. **动态版本号**：
+
+    - 每次构建时，自动将 UserScript 的版本号更新为当前时间。
+
+3. **代码打包**：
+
+    - 使用 Rollup 将所有源代码和依赖打包成一个独立执行的脚本。
+    - 采用 IIFE（立即执行函数表达式）格式，确保代码在隔离环境中运行。
+
+4. **自动安装**：
+    - 构建完成后，自动启动 Web 服务器。
+    - 通过 URL 访问，自动打开浏览器并提示安装生产版本的用户脚本。
+
+## 项目结构
+
+```
+tampermonkey-mod/
+├── src/
+│ └── index.ts # 主要业务逻辑入口文件
+├── build-utils/
+│ ├── types/
+│ │ └── userscript.d.ts # Tampermonkey API 类型定义文件
+│ ├── client.ts # 热重载客户端代码
+│ ├── server.ts # 开发服务器和 WebSocket 服务器
+│ ├── tool-config.json # 工具配置文件
+│ ├── userscript-generator.ts # UserScript 生成器工具函数
+│ └── userscript-header-container.ts # UserScript 元信息容器
+├── dist/
+│ ├── index.bundle.js # 打包后的主要业务逻辑（开发环境）
+│ ├── client.bundle.js # 打包后的热重载客户端代码（开发环境）
+│ ├── header.bundle.user.js # 生成的 UserScript 头部文件（开发环境）
+│ └── prod.bundle.user.js # 打包后的完整 UserScript（生产环境）
+├── rollup.config.base.ts # Rollup 基础配置
+├── rollup.config.dev.ts # Rollup 开发环境配置
+├── rollup.config.prod.ts # Rollup 生产环境配置
+├── userscript-header.ts # UserScript 头部配置
+├── package.json # 项目依赖和脚本配置
+├── tsconfig.json # TypeScript 配置
+└── README.md # 项目说明文档
+```
 
 ## 许可证
 
