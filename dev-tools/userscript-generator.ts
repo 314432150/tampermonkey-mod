@@ -2,6 +2,7 @@ import open from "open";
 import { startHttpServer } from "./server";
 import toolConfig from "./tool-config.json" assert { type: "json" };
 
+
 /**
  * 生成UserScript元数据注释模块
  *
@@ -11,61 +12,6 @@ import toolConfig from "./tool-config.json" assert { type: "json" };
  * 生成整个UserScript的注释部分
  */
 
-/**
- * 定义一个 UserScript 对象，用于描述用户脚本的元数据。
- */
-export type UserScriptHeader = {
-    // 用户脚本名称
-    name: string;
-    // 用户脚本命名空间
-    namespace: string;
-    // 版权声明
-    copyright: string;
-    // 用户脚本版本号
-    version: string;
-    // 用户脚本描述
-    description: string;
-    // 用户脚本图标
-    icon: string;
-    // 用户脚本高分辨率图标
-    icon64: string;
-    // 授予脚本的权限
-    grant: string[];
-    // 用户脚本作者
-    author: string;
-    // 用户脚本主页
-    homepage: string;
-    // 揭示脚本是否包含广告、追踪等特性
-    antifeature: string[];
-    // 用户脚本的应用范围
-    include: string[];
-    // 用户脚本的匹配规则
-    match: string[];
-    // 用户脚本的排除规则
-    exclude: string[];
-    // 用户脚本的运行时机
-    "run-at": string;
-    // 指定沙箱环境
-    sandbox: "js" | "raw" | "dom" | "";
-    // 用户脚本依赖的外部资源
-    require: string[];
-    // 预加载的资源
-    resource: string[];
-    // 允许脚本连接的域名
-    connect: string[];
-    // 禁止在 iframe 中运行脚本
-    noframes: boolean;
-    // 更新检查的 URL
-    updateURL: string;
-    // 下载更新的 URL
-    downloadURL: string;
-    // 支持和反馈的 URL
-    supportURL: string;
-    // 使用 webRequest 规则
-    webRequest: string;
-    // 是否解除包装直接注入脚本
-    unwrap: boolean;
-};
 
 /**
  * 根据依赖项生成 [@require] 注释, 转换为第三方cdn库链接
