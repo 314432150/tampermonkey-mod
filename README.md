@@ -28,80 +28,74 @@ Tampermonkey-mod 是一个用于 Tampermonkey 的模块化 TypeScript 开发框�
     npm install --registry=https://registry.npmmirror.com
     ```
 
-## 使用方法
+## 使用
 
 ### 开发
 
-#### 浏览器扩展设置
+1. 配置 Tampermonkey 扩展以允许访问文件 URL：
 
-在 Tampermonkey 扩展设置中打开 "允许访问文件网址":
+    - Chrome 浏览器：
 
--   对于 Chrome 浏览器:
-    -   打开扩展管理页面 (chrome://extensions/)
-    -   找到 Tampermonkey 扩展，点击 "详情"
-    -   开启 "允许访问文件网址" 选项
--   对于 Edge 浏览器:
-    -   打开扩展管理页面 (edge://extensions/)
-    -   找到 Tampermonkey 扩展，点击 "详细信息"
-    -   开启 "允许访问文件 URL" 选项
+        1. 访问扩展管理页面 (chrome://extensions/)
+        2. 找到 Tampermonkey 扩展并点击"详情"
+        3. 启用"允许访问文件网址"选项
 
-#### 命令
+    - Edge 浏览器：
+        1. 打开扩展管理页面 (edge://extensions/)
+        2. 定位 Tampermonkey 扩展并点击"详细信息"
+        3. 开启"允许访问文件 URL"选项
 
-启动带有热重载的开发服务器:
+2. 启动带有热重载功能的开发服务器：
 
-```
-npm run dev
-```
+   ```
+   npm run dev
+   ```
 
-#### 构建过程
+### 开发环境构建流程 `rollup.config.dev.ts`
 
-`rollup.config.dev.ts` 配置文件定义了一个高效的开发环境构建过程：
+1. **多文件构建策略**：
 
-1. **多文件构建**：
+    - 业务逻辑代码 (`dist/index.bundle.js`)
+    - 热重载客户端代码 (`dist/client.bundle.js`)
+    - Tampermonkey 脚本 (`dist/header.bundle.user.js`)
 
-    - 业务逻辑代码（`dist/index.bundle.js`）
-    - 热重载客户端代码（`dist/client.bundle.js`）
-    - Tampermonkey 脚本（`dist/header.bundle.user.js`）
+2. **智能 Tampermonkey 脚本生成**：
 
-2. **智能 Tampermonkey 脚本**：
+    - 仅包含必要的 UserScript 元数据
+    - 通过`@require`指令动态引入业务逻辑和热重载客户端代码
+    - 自动为脚本名称添加`.dev`后缀，便于区分开发版本
+    - 使用当前时间戳作为版本号，确保每次构建都是最新版
 
-    - 仅包含 UserScript 元数据
-    - 通过 `@require` 动态引用业务逻辑和热重载客户端代码
-    - 自动添加 `.dev` 后缀到脚本名称，区分开发版本
-    - 使用当前时间作为版本号，确保每次构建都是最新版
-
-3. **自动化开发环境**：
+3. **自动化开发环境配置**：
 
     - 启动本地 Web 服务器
-    - 自动打开浏览器并安装开发版脚本（仅首次构建时）
+    - 首次构建时自动打开浏览器并安装开发版脚本
 
 4. **实时热重载机制**：
 
-    - 使用 WebSocket 建立服务器与客户端的实时通信
+    - 利用 WebSocket 技术实现服务器与客户端的实时通信
     - 代码变更时自动通知客户端并触发页面刷新
 
-5. **高效的代码更新**：
+5. **高效的代码更新策略**：
 
-    - 使用 File 协议引用业务逻辑，确保每次刷新都加载最新代码
-    - 避免浏览器缓存问题，保证开发中的即时反馈
+    - 采用 File 协议引用业务逻辑，确保每次刷新都加载最新代码
+    - 绕过浏览器缓存机制，保证开发过程中的即时反馈
 
-6. **模块化设计**：
-    - 将热重载逻辑与业务代码分离，保持代码清晰和关注点分离
-    - 使用 Rollup 插件系统实现自定义构建逻辑
+6. **模块化设计理念**：
+    - 将热重载逻辑与业务代码解耦，提高代码清晰度和可维护性
+    - 充分利用 Rollup 插件系统实现自定义构建逻辑
 
-这种配置为开发者提供了一个无缝的开发体验，实现了代码修改到浏览器预览的快速反馈循环，大大提高了 Tampermonkey 脚本的开发效率。
+这套精心设计的开发环境为开发者提供了流畅的开发体验，实现了从代码修改到浏览器实时预览的快速反馈循环，显著提升了 Tampermonkey 脚本的开发效率。
 
 ### 生产
 
-#### 命令
+构建生产环境用户脚本
 
 ```
 npm run build
 ```
 
-#### 构建过程
-
-`rollup.config.dev.ts` 配置文件定义了一个高效的开发环境构建过程：
+### 生产环境构建流程 `rollup.config.dev.ts` ：
 
 1. **单一输出文件**：
 
